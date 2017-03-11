@@ -19,5 +19,5 @@ from bank_app import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.dashboard),
+    url(r'^$', views.index),
 ]

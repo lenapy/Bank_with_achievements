@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 
 
-def dashboard(request):
-    return HttpResponse('')
+def index(request):
+    return HttpResponse('lala')
 
