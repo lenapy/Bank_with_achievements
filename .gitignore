@@ -2,3 +2,11 @@
 .idea
 .gitignore
 
+__pycache__/
+bank_app/migrations/0003_auto_20170312_1013.py
+bank_app/migrations/0004_auto_20170312_1016.py
+bank_app/migrations/__pycache__/0003_auto_20170312_1013.cpython-34.pyc
+bank_app/migrations/__pycache__/0004_auto_20170312_1016.cpython-34.pyc
+pvenv/lib/python3.4/__pycache__/ntpath.cpython-34.pyc
+static/
+user_files/
