@@ -36,16 +36,29 @@ class Achievements(models.Model):
         db_table = 'achievements'
 
 
-class AchievementResource(models.Model):
+class AchievementResources(models.Model):
     resource_type = models.IntegerField()
-    resource_id = models.IntegerField(auto_created=True)
     update_data = models.DateTimeField(auto_created=True)
-    resource_files = models.FileField(upload_to='resource/%Y/%m/%d/', null=True, blank=True)
-    resource_links = models.URLField(null=True, blank=True)
     achievement = models.ForeignKey(Achievements, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'achievement_resource'
+        db_table = 'achievement_resources'
+
+
+class Links(models.Model):
+    link = models.URLField()
+    achievement_resource = models.ForeignKey(AchievementResources, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'links'
+
+
+class Files(models.Model):
+    file = models.FileField(upload_to='resource/%Y/%m/%d/')
+    achievement_resource = models.ForeignKey(AchievementResources, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'files'
 
 
 class Labels(models.Model):
@@ -75,6 +88,6 @@ class Observers(models.Model):
 admin.site.register(Users)
 admin.site.register(Cards)
 admin.site.register(Achievements)
-admin.site.register(AchievementResource)
+admin.site.register(AchievementResources)
 admin.site.register(UserLabels)
 admin.site.register(Observers)
