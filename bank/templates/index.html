@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Achievements</h2>
+    <table class="table">
+        <thead>
+          <tr>
+             <th>name</th>
+             <th>text</th>
+             <th>data</th>
+              <th>card</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for achievement in achievements %}
+        <tr>
+        <td>{{ achievement.name }}</td>
+        <td>{{ achievement.text }}</td>
+        <td>{{ achievement.update_data }}</td>
+        <td>{{ achievement.card }}</td>
+         </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
