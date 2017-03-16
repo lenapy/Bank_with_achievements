@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 import uuid
-from django.contrib import messages
-
 
 from bank.user.forms import RegistrationForm, LoginForm, PasswordChangeForm
 from bank.models import User, Session
@@ -57,15 +55,12 @@ def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST)
         if form.is_valid():
-            form.save()
-            session = Session.objects.update(user=form.user, token=uuid.uuid4())
-            messages.success(request, 'Your password was successfully updated!')
-            response = redirect('user:change_password')
-            response.set_cookie('user-session', session.token,
-                                expires=session.date_expired)
-            return response
+            new_pass = form.cleaned_data
+            print(new_pass)
+            User.objects.change_password(new_pass)
+            return redirect('user:login')
         else:
-            messages.error(request, 'Please correct password')
+            pass
     else:
-        form = PasswordChangeForm(request.user)
+        form = PasswordChangeForm()
     return render(request, 'user/change_password.html', context={'form': form})

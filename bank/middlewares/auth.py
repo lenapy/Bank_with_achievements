@@ -9,7 +9,7 @@ class Auth:
         try:
             user_session = request.COOKIES['user-session']
             session = Session.objects.filter(token=user_session).last()
-            print(session.user.login)
+            # print(session.user.login)
         except KeyError:
             pass
         response = self.get_response(request)

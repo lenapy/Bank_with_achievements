@@ -29,14 +29,13 @@ class LoginForm(forms.Form):
 
 
 class PasswordChangeForm(forms.Form):
-    login = forms.CharField(max_length=50, initial='')
     password = forms.CharField(min_length=6, initial='')
     new_password = forms.CharField(min_length=6, initial='')
     reenter_password = forms.CharField(min_length=6, initial='')
 
     def clean(self):
         cleaned_data = super().clean()
-        login = cleaned_data['login']
+        login = cleaned_data.get('login')
         password = cleaned_data['password']
         new_password = cleaned_data['new_password']
         reenter_password = cleaned_data['reenter_password']
