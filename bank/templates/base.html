@@ -14,6 +14,7 @@
         <p>To change password <a href="{% url 'user:change_password' %}">[Change password ]</a></p>
         {% else %}
         <p>Welcome, Guest <a href="{% url 'user:login' %}">[login]</a></p>
+        <p>To change password <a href="{% url 'user:change_password' %}">[Change password ]</a></p>
 
 
     {% endif %}

@@ -47,27 +47,25 @@ def logout(request):
     if hasattr(user, 'is_authenticated') and not user.is_authenticated:
         user = None
         request.session.flush()
-    # if hasattr(request, 'user'):
-    #     from django.contrib.auth.models import AnonymousUser
-    #     request.user = AnonymousUser()
+    if hasattr(request, 'user'):
+        from django.contrib.auth.models import AnonymousUser
+        request.user = AnonymousUser()
     return render(request, 'user/logout.html')
 
 
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = PasswordChangeForm(data=request.POST)
         if form.is_valid():
             form.save()
             session = Session.objects.update(user=form.user, token=uuid.uuid4())
             messages.success(request, 'Your password was successfully updated!')
-            response = redirect('accounts:change_password')
+            response = redirect('user:change_password')
             response.set_cookie('user-session', session.token,
                                 expires=session.date_expired)
             return response
         else:
-            messages.error(request, 'Please correct the error below.')
+            messages.error(request, 'Please correct password')
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'user/change_password.html', {
-        'form': form
-    })
+    return render(request, 'user/change_password.html', context={'form': form})
