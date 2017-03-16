@@ -1,3 +1,5 @@
+from django.shortcuts import render, redirect
+
 from bank.models import Session
 
 
@@ -6,12 +8,16 @@ class Auth:
         self.get_response = get_response
 
     def __call__(self, request):
+        if request.get_full_path() == '/user/login/':
+            response = self.get_response(request)
+            return response
         try:
             user_session = request.COOKIES['user-session']
             session = Session.objects.filter(token=user_session).last()
-            # print(session.user.login)
+            if not session:
+                return redirect('user:login')
         except KeyError:
-            pass
+            return redirect('user:login')
         response = self.get_response(request)
         return response
 

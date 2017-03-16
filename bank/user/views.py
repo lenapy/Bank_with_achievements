@@ -41,14 +41,12 @@ def login(request):
 
 
 def logout(request):
-    user = getattr(request, 'user', None)
-    if hasattr(user, 'is_authenticated') and not user.is_authenticated:
-        user = None
-        request.session.flush()
-    if hasattr(request, 'user'):
-        from django.contrib.auth.models import AnonymousUser
-        request.user = AnonymousUser()
-    return render(request, 'user/logout.html')
+    user_session = request.COOKIES['user-session']
+    session = Session.objects.filter(token=user_session).last()
+    if session.delete():
+        return redirect('user:login')
+    else:
+        print("err")
 
 
 def change_password(request):
@@ -64,3 +62,6 @@ def change_password(request):
     else:
         form = PasswordChangeForm()
     return render(request, 'user/change_password.html', context={'form': form})
+
+
+
