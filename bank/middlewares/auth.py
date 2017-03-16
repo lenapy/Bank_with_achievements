@@ -8,8 +8,9 @@ class Auth:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.get_full_path() == '/user/login/':
-            response = self.get_response(request)
+        response = self.get_response(request)
+        no_redirect_urls = ['/user/login/', '/user/registration/']
+        if request.get_full_path() in no_redirect_urls:
             return response
         try:
             user_session = request.COOKIES['user-session']
@@ -18,6 +19,5 @@ class Auth:
                 return redirect('user:login')
         except KeyError:
             return redirect('user:login')
-        response = self.get_response(request)
         return response
 
