@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
+import uuid
+from django.contrib import messages
 
-from bank.user.forms import RegistrationForm, LoginForm
-from bank.models import User
+
+from bank.user.forms import RegistrationForm, LoginForm, PasswordChangeForm
+from bank.models import User, Session
 
 
 def registration(request):
@@ -28,9 +31,43 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            return redirect('/')
+            session = Session.objects.create(user=form.user, token=uuid.uuid4())
+            response = redirect('/')
+            response.set_cookie('user-session', session.token,
+                                expires=session.date_expired)
+            return response
     else:
         form = LoginForm()
 
-    return render(request, 'user/login.html',
-                  context={'form': form})
+    return render(request, 'user/login.html', context={'form': form})
+
+
+def logout(request):
+    user = getattr(request, 'user', None)
+    if hasattr(user, 'is_authenticated') and not user.is_authenticated:
+        user = None
+        request.session.flush()
+    # if hasattr(request, 'user'):
+    #     from django.contrib.auth.models import AnonymousUser
+    #     request.user = AnonymousUser()
+    return render(request, 'user/logout.html')
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            session = Session.objects.update(user=form.user, token=uuid.uuid4())
+            messages.success(request, 'Your password was successfully updated!')
+            response = redirect('accounts:change_password')
+            response.set_cookie('user-session', session.token,
+                                expires=session.date_expired)
+            return response
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'user/change_password.html', {
+        'form': form
+    })

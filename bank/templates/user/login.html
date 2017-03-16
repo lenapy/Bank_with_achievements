@@ -3,9 +3,8 @@
 {% block content %}
 
     {% if form.errors %}
-        {{ form.errors }}}
+        <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
-
     <form action="" method="post">
          {% csrf_token %}
 

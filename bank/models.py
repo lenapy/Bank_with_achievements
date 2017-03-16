@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
+from datetime import datetime, timedelta
 
 from bank.managers import UserManager
 
@@ -126,6 +127,15 @@ class Observer(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.user, self.card)
+
+
+class Session(models.Model):
+    user = models.ForeignKey(User)
+    token = models.CharField(max_length=36)
+    date_expired = models.DateTimeField(default=datetime.now() + timedelta(days=7))
+
+    class Meta:
+        db_table = 'session'
 
 admin.site.register(User)
 admin.site.register(Card)

@@ -9,7 +9,14 @@
 <body>
 <div class="container">
   <div class="row">
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}  <a href="{% url 'user:logout' %}">[logout]</a></p>
+        <p>To change password <a href="{% url 'user:change_password' %}">[Change password ]</a></p>
+        {% else %}
+        <p>Welcome, Guest <a href="{% url 'user:login' %}">[login]</a></p>
 
+
+    {% endif %}
     {% block content %}
     {% endblock %}
 
