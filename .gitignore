@@ -4,6 +4,6 @@
 
 __pycache__/
 bank/migrations/
-static/
 bank/user_files/
+pvenv/
 

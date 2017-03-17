@@ -14,3 +14,4 @@ class UserManager(models.Manager):
         password_hash = make_password(password, hasher='md5')
         self.update(password=password_hash)
 
+

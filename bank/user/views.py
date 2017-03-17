@@ -14,15 +14,11 @@ def registration(request):
                 form.cleaned_data['password']
             ):
                 pass
-            return redirect('user:success_registration')
+            return redirect('user:login')
     else:
         form = RegistrationForm()
     return render(request, 'user/registration.html',
                   context={'form': form})
-
-
-def success_registration(request):
-    return render(request, 'user/success_registration.html')
 
 
 def login(request):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from datetime import datetime, timedelta
 
+
 from bank.managers import UserManager
 
 
@@ -34,6 +35,13 @@ class User(AbstractBaseUser):
 
     def get_short_name(self):
         return self.username
+
+    @property
+    def is_auth(self, request):
+        user_session = request['user-session']
+        session = Session.objects.filter(token=user_session).last()
+        if session:
+            return True
 
 
 class Card(models.Model):
