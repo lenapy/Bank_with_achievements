@@ -5,6 +5,9 @@ from bank.models import User
 
 class RegistrationForm(forms.Form):
     login = forms.CharField(max_length=50, initial='')
+    username = forms.CharField(max_length=50, initial='')
+    surname = forms.CharField(max_length=50, initial='')
+    email = forms.EmailField(initial='')
     password = forms.CharField(min_length=6, initial='')
 
     def clean_login(self):
@@ -34,12 +37,16 @@ class PasswordChangeForm(forms.Form):
     reenter_password = forms.CharField(min_length=6, initial='')
 
     def clean(self):
+
         cleaned_data = super().clean()
-        login = cleaned_data.get('login')
         password = cleaned_data['password']
         new_password = cleaned_data['new_password']
         reenter_password = cleaned_data['reenter_password']
-        self.user = User.objects.filter(login=login).first()
-        if self.user and new_password != reenter_password or new_password == password:
+        if not (new_password == reenter_password or new_password != password):
             raise forms.ValidationError('Incorrect password')
-        return new_password
+        else:
+            return cleaned_data
+
+
+
+

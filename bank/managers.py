@@ -4,9 +4,13 @@ from django.contrib.auth.hashers import make_password
 
 class UserManager(models.Manager):
 
-    def registration(self, login, password):  # self - model
+    def registration(self, login, password, username, surname, email):  # self - model
         password_hash = make_password(password, hasher='md5')
-        user = self.create(login=login, password=password_hash)
+        user = self.create(login=login,
+                           password=password_hash,
+                           username=username,
+                           surname=surname,
+                           email=email)
         user.save()
         return user.pk
 
