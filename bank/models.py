@@ -14,7 +14,7 @@ class User(AbstractBaseUser):
     date_of_birth = models.CharField(max_length=50, null=True, blank=True)
     phone_number = models.IntegerField(null=True, blank=True)
     about_user = models.TextField(null=True, blank=True)
-    email = models.CharField(max_length=50)
+    email = models.EmailField()
     password = models.CharField(max_length=50)
     avatar = models.ImageField(upload_to='avatar/%Y/%m/%d/')
     level_points = models.IntegerField(null=True, blank=True)
